@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Molding Line Process Report</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="brand">Created by Lahiru_Dilhara</div>
+        <div class="brand-sub">Quality Assurance • Research & Development</div>
+      </div>
+      <div class="top-actions">
+        <span id="lockStatus" class="status-pill locked">Locked</span>
+        <button id="lockBtn" class="btn ghost" type="button">Lock</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="loginCard" class="card auth-card">
+        <div class="section-title">
+          <div>
+            <h1>Secure Local Quality Record</h1>
+            <p>All records are encrypted in this browser before they are saved.</p>
+          </div>
+        </div>
+        <div id="setupBox" class="auth-box hidden">
+          <h2>Create encryption password</h2>
+          <p class="muted">Use a strong password. It is not stored. If it is lost, encrypted records cannot be recovered.</p>
+          <input id="newPassword" type="password" autocomplete="new-password" placeholder="Create password">
+          <input id="newPassword2" type="password" autocomplete="new-password" placeholder="Confirm password">
+          <button id="createVaultBtn" class="btn primary" type="button">Create Secure Vault</button>
+        </div>
+        <div id="unlockBox" class="auth-box hidden">
+          <h2>Unlock secure vault</h2>
+          <input id="unlockPassword" type="password" autocomplete="current-password" placeholder="Encryption password">
+          <button id="unlockBtn" class="btn primary" type="button">Unlock</button>
+        </div>
+        <div id="authMessage" class="message"></div>
+      </section>
+
+      <div id="appContent" class="hidden">
+        <nav class="tabs">
+          <button class="tab active" data-tab="entryTab">New Process Report</button>
+          <button class="tab" data-tab="recordsTab">Search / Records</button>
+          <button class="tab" data-tab="helpTab">Requirements & Security</button>
+        </nav>
+
+        <section id="entryTab" class="tab-panel active">
+          <form id="reportForm" autocomplete="off">
+            <div class="card">
+              <div class="section-title">
+                <div><h2>Process Report — Molding Line</h2><p>Enter the report header and process information.</p></div>
+                <div class="autosave-badge">● Immediate encrypted save on submission</div>
+              </div>
+
+              <div class="grid four">
+                <label>Date<input id="reportDate" type="date" required></label>
+                <label>Shift<input id="shift" type="text" placeholder="Night / Day" required></label>
+                <label>Product<input id="product" type="text" placeholder="Kriollo Milk Plain" required></label>
+                <label>Weight<input id="weight" type="text" placeholder="47 g"></label>
+                <label>Start Time<input id="startTime" type="time"></label>
+                <label>End Time<input id="endTime" type="time"></label>
+                <label class="check-label"><input id="zellers" type="checkbox" checked> Zellers</label>
+                <label class="check-label"><input id="kriolloMilky" type="checkbox" checked> Kriollo Milky</label>
+              </div>
+            </div>
+
+            <div class="card">
+              <h2>Chocolate / Cream Information</h2>
+              <div class="grid three">
+                <label>Chocolate Batch No<input id="chocolateBatch" type="text"></label>
+                <label>Chocolate Viscosity<input id="chocolateViscosity" type="text"></label>
+                <label>Chocolate Moisture<input id="chocolateMoisture" type="text"></label>
+                <label>Center Fill Cream Type<input id="creamType" type="text"></label>
+                <label>Center Fill Cream Batch No<input id="creamBatch" type="text"></label>
+                <label>Cream Viscosity<input id="creamViscosity" type="text"></label>
+                <label>Cream Color<input id="creamColor" type="text"></label>
+                <label>Cream Taste<input id="creamTaste" type="text"></label>
+              </div>
+            </div>
+
+            <div class="card">
+              <h2>Insertion Information</h2>
+              <div class="two-col">
+                <fieldset>
+                  <legend>Insertion Type 1</legend>
+                  <label>Type<input id="ins1Type" type="text"></label>
+                  <label>Batch<input id="ins1Batch" type="text"></label>
+                  <label>%<input id="ins1Percent" type="text"></label>
+                  <label>Taste<input id="ins1Taste" type="text"></label>
+                </fieldset>
+                <fieldset>
+                  <legend>Insertion Type 2</legend>
+                  <label>Type<input id="ins2Type" type="text"></label>
+                  <label>Batch<input id="ins2Batch" type="text"></label>
+                  <label>%<input id="ins2Percent" type="text"></label>
+                  <label>Taste<input id="ins2Taste" type="text"></label>
+                </fieldset>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title">
+                <div><h2>Sequential Time-Slot Measurements</h2><p>Add one column for every inspection time. Existing times remain available for later retrieval.</p></div>
+                <button id="addSlotBtn" class="btn primary" type="button">＋ Add Time Slot</button>
+              </div>
+              <div id="slotList" class="slot-list"></div>
+            </div>
+
+            <div class="card">
+              <h2>Any Rejection / NC</h2>
+              <div id="rejectionList"></div>
+              <button id="addRejectionBtn" class="btn secondary" type="button">＋ Add Rejection</button>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn primary large" type="submit">Save Process Report Securely</button>
+              <button id="resetFormBtn" class="btn ghost large" type="button">Clear Form</button>
+            </div>
+            <div id="saveMessage" class="message"></div>
+          </form>
+        </section>
+
+        <section id="recordsTab" class="tab-panel">
+          <div class="card">
+            <div class="section-title">
+              <div><h2>Search / Retrieve Records</h2><p>Filter by date and time, or select all time slots for a date.</p></div>
+              <button id="printSelectedBtn" class="btn primary" type="button">Print / Save PDF</button>
+            </div>
+            <div class="grid four search-grid">
+              <label>Date<input id="searchDate" type="date"></label>
+              <label>From Time<input id="searchFrom" type="time"></label>
+              <label>To Time<input id="searchTo" type="time"></label>
+              <label>Product / Shift<input id="searchText" type="search" placeholder="Search text"></label>
+            </div>
+            <div class="search-actions">
+              <button id="searchBtn" class="btn primary" type="button">Search</button>
+              <button id="allDateBtn" class="btn secondary" type="button">Select All Slots for Date</button>
+              <button id="clearSearchBtn" class="btn ghost" type="button">Clear Search</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="record-summary" id="recordSummary">No search performed.</div>
+            <div class="table-wrap">
+              <table id="recordsTable">
+                <thead>
+                  <tr><th>Select</th><th>Date</th><th>Time</th><th>Product</th><th>Shift</th><th>Line Speed</th><th>Tank °C</th><th>Zone Out °C</th><th>Saved</th><th>Action</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="recordDetail" class="card hidden"></div>
+        </section>
+
+        <section id="helpTab" class="tab-panel">
+          <div class="card">
+            <h2>System Requirements & Development Process</h2>
+            <div class="prose">
+              <h3>1. Functional requirements</h3>
+              <ul>
+                <li>Digital form closely follows the photographed Molding Line Process Report.</li>
+                <li>Sequential time-slot entry for process measurements.</li>
+                <li>Immediate encrypted persistence after each report submission.</li>
+                <li>Search by date, time range, product and shift.</li>
+                <li>Select every slot for a selected date with one action.</li>
+                <li>Open a full record and its process readings at any time.</li>
+                <li>Print the selected results in an A4 report layout or choose “Save as PDF” from the browser print dialog.</li>
+              </ul>
+              <h3>2. Data integrity</h3>
+              <ul>
+                <li>Each saved report receives a unique record ID and creation timestamp.</li>
+                <li>Records are encrypted with AES-GCM using a key derived from the user's password with PBKDF2.</li>
+                <li>Storage uses IndexedDB, so the browser saves data locally rather than depending on a page refresh or temporary form state.</li>
+              </ul>
+              <h3>3. Important production note</h3>
+              <p>This HTML/CSS/JavaScript-only version is a secure local prototype, not a multi-user enterprise database. Browser storage cannot provide server-grade security, central backup, audit trails, role-based access, or multi-device synchronization. For production deployment, use HTTPS plus an authenticated backend/database (for example, an API with PostgreSQL or another controlled database), server-side authorization, audit logging, automated backups and access controls.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <template id="slotTemplate">
+    <div class="slot-card">
+      <div class="slot-head">
+        <strong>Time Slot <span class="slot-number"></span></strong>
+        <button type="button" class="btn danger small remove-slot">Remove</button>
+      </div>
+      <div class="slot-grid">
+        <label>Time<input class="s-time" type="time" required></label>
+        <label>Tempering Index<input class="s-tempering" type="text" placeholder="N/A"></label>
+        <label>Line Speed<input class="s-speed" type="text"></label>
+        <label>Tank Temperature (°C)<input class="s-tank" type="text"></label>
+        <label>Mold Heat (°C)<input class="s-mold" type="text"></label>
+        <label>Depositor 1 (°C)<input class="s-dep1" type="text"></label>
+        <label>Ribbon / Depositor 2 (°C)<input class="s-dep2" type="text"></label>
+        <label>Depositor 3 (°C)<input class="s-dep3" type="text"></label>
+        <label>Cooling Profile Time<input class="s-cooling" type="text"></label>
+        <label>Zone 01 (°C)<input class="s-z1" type="text"></label>
+        <label>Zone 02 (°C)<input class="s-z2" type="text"></label>
+        <label>Zone 03 (°C)<input class="s-z3" type="text"></label>
+        <label>Zone In °C<input class="s-zin-c" type="text"></label>
+        <label>Zone In %<input class="s-zin-p" type="text"></label>
+        <label>Zone Out °C<input class="s-zout-c" type="text"></label>
+        <label>Zone Out %<input class="s-zout-p" type="text"></label>
+        <label>Vibrator On<select class="s-vib"><option>ON</option><option>OFF</option><option>N/A</option></select></label>
+        <label>Side Vibration On<select class="s-side"><option>ON</option><option>OFF</option><option>N/A</option></select></label>
+      </div>
+      <div class="metal">
+        <span>Metal Verification</span>
+        <label>Fe (2.0 mm)<input class="s-fe" type="checkbox"></label>
+        <label>Non-Fe (2.5 mm)<input class="s-nonfe" type="checkbox"></label>
+        <label>SS (3.0 mm)<input class="s-ss" type="checkbox"></label>
+      </div>
+    </div>
+  </template>
+
+  <template id="rejectionTemplate">
+    <div class="rejection-row">
+      <input class="r-nc" placeholder="NC Number">
+      <input class="r-issue" placeholder="Issue">
+      <input class="r-cause" placeholder="Root Cause">
+      <input class="r-action" placeholder="Corrective Action">
+      <button type="button" class="btn danger small remove-rejection">×</button>
+    </div>
+  </template>
+
+  <div id="printArea" class="print-area"></div>
+  <script src="app.js"></script>
+</body>
+</html>
